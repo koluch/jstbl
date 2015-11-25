@@ -1,0 +1,22 @@
+{
+  "name": "jstbl",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koluch/jstbl.git"
+  },
+  "bin": {
+    "jstbl": "jstbl.js"
+  },
+  "author": "Nikolai Mavrenkov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koluch/jstbl/issues"
+  },
+  "homepage": "https://github.com/koluch/jstbl#readme"
+}
