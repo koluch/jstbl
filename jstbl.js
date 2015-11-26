@@ -26,5 +26,32 @@
  * Author:  Nikolai Mavrenkov <koluch@koluch.ru>
  * Created: 26.11.2015 01:15
  */
-var index = require('./index.js');
-index.sayHello();
+
+var main = require("./index");
+
+process.stdin.setEncoding("utf-8");
+
+var result = "";
+
+process.stdin.on('readable', () => {
+    var chunk = process.stdin.read();
+    if(chunk) {
+        result+=chunk;
+    }
+});
+
+process.stdin.on('end', () => {
+
+    var data = JSON.parse(result);
+
+    var args = process.argv.slice(2).map((arg) => {
+        if(!/^--.+=.+$/.test(arg)) throw new Error("Bad arg format: " + arg);
+        var parts = arg.split("=");
+        return {
+            name:parts[0].replace(/^--/, ""),
+            value:parts[1]
+        };
+    });
+
+    main.print(data, args);
+});
