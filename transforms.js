@@ -58,27 +58,23 @@ function filter(data, f) {
     return mapGroup(data, (group) => group.filter(f))
 }
 
-function group(ar, fs) {
-    var f = fs[0];
-    if(f) {
-        var result = {};
-        for (var i = 0; i < ar.length; i++) {
-            var el = ar[i];
-            var cat = f(el);
-            if (!result[cat]) {
-                result[cat] = [];
+function group(data, fs) {
+    var result = data;
+    fs.forEach((f) => {
+        result = mapGroup(result,(group) => {
+            var result = {};
+            for (var i = 0; i < group.length; i++) {
+                var el = group[i];
+                var cat = f(el);
+                if (!result[cat]) {
+                    result[cat] = [];
+                }
+                result[cat].push(el);
             }
-            result[cat].push(el);
-        }
-        var restFs = fs.slice(1);
-        for(var i in result) {
-            result[i] = group(result[i], restFs);
-        }
-        return result;
-    }
-    else {
-        return ar;
-    }
+            return result;
+        })
+    });
+    return result;
 }
 
 function sort(data, fs) {
