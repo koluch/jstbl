@@ -118,7 +118,7 @@ exports.print = function(data, commands){
                 var fieldExpList = commaVals(arg.value);
                 // Generate functions for each expression from value list
                 var fList = fieldExpList.map((exp) => {
-                    var regExp = /^(.+)([\=\>])(.+)$/g;
+                    var regExp = /^([^=<>]+)([=><]+)([^=<>]+)$/g;
                     var match = regExp.exec(exp);
                     if(match == null)  throw new Error("Bad expression format: " + exp);
                     var field = match[1];
@@ -128,9 +128,9 @@ exports.print = function(data, commands){
                     switch(op) {
                         case "=": opF = (v1,v2) => v1 === v2; break;
                         case ">": opF = (v1,v2) => v1 > v2; break;
-                        case "<": opF = (v1,v2) => v1 > v2; break;
-                        case ">=": opF = (v1,v2) => v1 <= v2; break;
-                        case "<=": opF = (v1,v2) => v1 >= v2; break;
+                        case "<": opF = (v1,v2) => v1 < v2; break;
+                        case ">=": opF = (v1,v2) => v1 >= v2; break;
+                        case "<=": opF = (v1,v2) => v1 <= v2; break;
                         default: throw new Error("Unknown operator: " + op);
                     }
                     return (row) => opF(row[field], value);
