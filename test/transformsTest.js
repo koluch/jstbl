@@ -58,17 +58,17 @@ describe('transforms', function () {
             var cleared = transforms.clear({a:{},b:{b1:{},b2:{}},c:[]});
             expect(cleared).to.be.deep.equal({});
         });
-        //it('should clear tree, nested in non-empty tree', function () {
-        //    var cleared = transforms.clear({
-        //        a: [1,2,3],
-        //        b: {b1: {}, b2: 42},
-        //        c: []
-        //    });
-        //    var expected = {
-        //        a: [1,2,3],
-        //        b: {b2: 42}
-        //    };
-        //    expect(cleared).to.be.deep.equal(expected);
-        //});
+        it('should clear tree, nested in non-empty tree', function () {
+            var cleared = transforms.clear({
+                a: [1,2,3],
+                b: {b1: {}, b2: 42},
+                c: []
+            });
+            var expected = {
+                a: [1,2,3],
+                b: {b2: 42}
+            };
+            expect(cleared).to.be.deep.equal(expected);
+        });
     });
 });
