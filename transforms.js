@@ -59,9 +59,8 @@ function filter(data, f) {
 }
 
 function group(data, fs) {
-    var result = data;
-    fs.forEach((f) => {
-        result = mapGroup(result,(group) => {
+    return fs.reduce((result, f) => (
+         mapGroup(result, (group) => {
             var result = {};
             for (var i = 0; i < group.length; i++) {
                 var el = group[i];
@@ -73,8 +72,7 @@ function group(data, fs) {
             }
             return result;
         })
-    });
-    return result;
+    ), data)
 }
 
 function sort(data, fs) {
