@@ -71,4 +71,61 @@ describe('transforms', function () {
             expect(cleared).to.be.deep.equal(expected);
         });
     });
+    describe('#mapGroup', function() {
+        it('should group any structures to itself, if function is not supplied', function () {
+            expect(transforms.mapGroup(42)).to.be.deep.equal(42);
+            expect(transforms.mapGroup("")).to.be.deep.equal("");
+            expect(transforms.mapGroup(true)).to.be.deep.equal(true);
+            expect(transforms.mapGroup([1,2,3])).to.be.deep.equal([1,2,3]);
+            expect(transforms.mapGroup({a:42})).to.be.deep.equal({a:42});
+            expect(transforms.mapGroup({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
+        });
+        it('should group primitives properly', function () {
+            expect(transforms.mapGroup(42, (x) => x * -1)).to.be.deep.equal(-42);
+            expect(transforms.mapGroup("abc", (x) => x + x)).to.be.deep.equal("abcabc");
+            expect(transforms.mapGroup(true, (x) => !x)).to.be.deep.equal(false);
+        });
+        it('should group empty object to itself', function () {
+            expect(transforms.mapGroup({}, (x) => x + x)).to.be.deep.equal({});
+        });
+        it('should fold arrays to scalars', function () {
+            expect(transforms.mapGroup([3,4,5], (arr) => arr.length)).to.be.equal(3);
+        });
+        it('should fold deeply nested arrays to scalars', function () {
+            var data = {
+                a: [1,2,3],
+                b: {
+                    b1: [4,5]
+                }
+            };
+            var f = (arr) => arr.length;
+            var expected = {
+                a: 3,
+                b: {
+                    b1: 2
+                }
+            };
+            expect(transforms.mapGroup(data, f)).to.be.deep.equal(expected);
+        });
+        it('should fold any plain JSON', function () {
+            var data = {
+                a: "str",
+                b: {
+                    b1: [4,5],
+                    b2: true
+                },
+                c: 42
+            };
+            var f = (anything) => "~" + anything + "~";
+            var expected = {
+                a: "~str~",
+                b: {
+                    b1: "~4,5~",
+                    b2: "~true~"
+                },
+                c: "~42~"
+            };
+            expect(transforms.mapGroup(data, f)).to.be.deep.equal(expected);
+        });
+    });
 });

@@ -31,8 +31,12 @@
  Basic table-data manipulation functions
  */
 function mapGroup(data, f) {
+    if(f === undefined) return data;
     if(data.constructor === Array) {
         return f(data.slice());
+    }
+    else if(data.constructor === Number || data.constructor === String || data.constructor === Boolean) {
+        return f(data);
     }
     else {
         var result = {};
