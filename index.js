@@ -172,6 +172,9 @@ exports.print = function(data, commands){
         }
     });
 
+    // Clear data after transformation (to get rid of groups, which could be created after filtering)
+    data = transforms.clear(data);
+
     // Print result data
     var header = collectHeader(data);
     var widthMap = collectWidthMap(data, header);
