@@ -108,7 +108,7 @@ function commaVals(arg) {
   API
 */
 
-var margin = 3 + 4;
+const MARGIN = 7; // margin between columns
 exports.print = function(data, commands){
 
     // Process data according to arguments
@@ -194,7 +194,7 @@ exports.print = function(data, commands){
                 var str = "";
                 for(var k = 0; k<indent; k++) {str += "    ";}
                 header.forEach((col) => {
-                    str += chalk.bold(printColumn(col, widthMap[col] + margin));
+                    str += chalk.bold(printColumn(col, widthMap[col] + MARGIN));
                 });
                 console.log(str);
             }
@@ -203,7 +203,7 @@ exports.print = function(data, commands){
                 for(var k = 0; k<indent; k++) {str += "    ";}
                 var row = data[i];
                 header.forEach((col) => {
-                    str += printColumn(row[col] || "...", widthMap[col] + margin);
+                    str += printColumn(row[col] || "...", widthMap[col] + MARGIN);
                 });
                 console.log(str);
             }
