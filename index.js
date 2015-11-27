@@ -55,98 +55,14 @@
 
 var chalk = require("chalk");
 
-/*
- Basic table-data manipulation functions
- */
-function forGroup(data, f) {
-    if(data.constructor === Array) {
-        return f(data.slice());
-    }
-    else {
-        var result = {};
-        for(var i in data) {
-            result[i] = forGroup(data[i], f);
-        }
-        return result;
-    }
-}
-
-function tmap(data, f) {
-    return forGroup(data, (group) => group.map(f));
-}
-
-/*
- Special functions to handle data - sorting, grouping and so on
- */
-function group(ar, fs) {
-    var f = fs[0];
-    if(f) {
-        var result = {};
-        for (var i = 0; i < ar.length; i++) {
-            var el = ar[i];
-            var cat = f(el);
-            if (!result[cat]) {
-                result[cat] = [];
-            }
-            result[cat].push(el);
-        }
-        var restFs = fs.slice(1);
-        for(var i in result) {
-            result[i] = group(result[i], restFs);
-        }
-        return result;
-    }
-    else {
-        return ar;
-    }
-}
-
-function sort(data, fs) {
-    return forGroup(data, (group) => (
-        group.sort((x,y) => {
-            var result = 0;
-            for (var i = 0; i < fs.length; i++) {
-                var f = fs[i];
-                result = f(x,y);
-                if(result!=0) break;
-            }
-            return result;
-        })
-    ));
-}
-
-function hideFields(data, fields) {
-    return tmap(data, (row) => {
-        var result = {};
-        for(var i in row) {
-            if(fields.indexOf(i)==-1) {
-                result[i] = row[i];
-            }
-        }
-        return result;
-    });
-}
-
-function showFields(data, fields) {
-    return tmap(data, (row) => {
-        var result = {};
-        for (var i = 0; i < fields.length; i++) {
-            var field = fields[i];
-            if(row[field]!==undefined) {
-                result[field] = row[field];
-            }
-        }
-        return result;
-    });
-}
-
+var transforms = require("./transforms");
 
 /*
  aux
  */
 function collectHeader(data) {
     var result = [];
-    tmap(data, row => {
+    transforms.map(data, row => {
         Object.keys(row).forEach((key) => {
             if(result.indexOf(key)==-1) {
                 result.push(key)
@@ -160,7 +76,7 @@ function collectWidthMap(data, header) {
     header = header || [];
     var result = {};
 
-    tmap(data, row => {
+    transforms.map(data, row => {
         for(var i in row) {
             result[i] = Math.max(result[i] || 0, ('' + (row[i] || '')).length);
         }
@@ -183,9 +99,6 @@ function comp(v1, v2) {
     }
 }
 
-
-
-
 function commaVals(arg) {
     return arg === undefined ? [] : arg.split(",")
 }
@@ -202,7 +115,7 @@ exports.print = function(data, args){
         switch(arg.name) {
             case "group": {
                 var groupFs = commaVals(arg.value).map(group => (row => row[group]));
-                data = group(data, groupFs);
+                data = transforms.group(data, groupFs);
                 break;
             }
             case "sort": {
@@ -216,15 +129,15 @@ exports.print = function(data, args){
                         return comp(row1[field], row2[field]) * (desc ? -1 : 1)
                     })
                 });
-                data = sort(data, sortF);
+                data = transforms.sort(data, sortF);
                 break;
             }
             case "hide": {
-                data = hideFields(data, commaVals(arg.value));
+                data = transforms.hideFields(data, commaVals(arg.value));
                 break;
             }
             case "show": {
-                data = showFields(data, commaVals(arg.value));
+                data = transforms.showFields(data, commaVals(arg.value));
                 break;
             }
             default: throw new Error("Unknown argument: " + arg.name)
