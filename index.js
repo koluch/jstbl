@@ -108,10 +108,10 @@ function commaVals(arg) {
 */
 
 var margin = 3 + 4;
-exports.print = function(data, args){
+exports.print = function(data, commands){
 
     // Process data according to arguments
-    args.forEach((arg) => {
+    commands.forEach((arg) => {
         switch(arg.name) {
             case "group": {
                 var groupFs = commaVals(arg.value).map(group => (row => row[group]));
@@ -140,7 +140,7 @@ exports.print = function(data, args){
                 data = transforms.showFields(data, commaVals(arg.value));
                 break;
             }
-            default: throw new Error("Unknown argument: " + arg.name)
+            default: throw new Error("Unknown command: " + arg.name)
         }
     });
 

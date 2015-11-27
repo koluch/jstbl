@@ -44,14 +44,16 @@ process.stdin.on('end', () => {
 
     var data = JSON.parse(result);
 
-    var args = process.argv.slice(2).map((arg) => {
-        if(!/^.+=.+$/.test(arg)) throw new Error("Bad arg format: " + arg);
-        var parts = arg.split("=");
+    var args = process.argv.slice(2);
+
+    var commands = args.filter((arg) => !arg.startsWith("--")).map((arg) => {
+        if(!/^.+:.+$/.test(arg)) throw new Error("Bad arg format: " + arg);
+        var parts = arg.split(":");
         return {
             name:parts[0],
             value:parts[1]
         };
     });
 
-    main.print(data, args);
+    main.print(data, commands);
 });
