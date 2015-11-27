@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/koluch/jstbl/issues"
   },
-  "homepage": "https://github.com/koluch/jstbl#readme"
+  "homepage": "https://github.com/koluch/jstbl#readme",
+  "dependencies": {
+    "chalk": "^1.1.1"
+  }
 }

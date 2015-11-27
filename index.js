@@ -53,7 +53,7 @@
  * example: node show_data.js data.json --group=data_size,threshold --show=data_size,threshold,bench,score,error,units --sort=bench-
  */
 
-var fs = require("fs");
+var chalk = require("chalk");
 
 /*
  Basic table-data manipulation functions
@@ -250,7 +250,7 @@ exports.print = function(data, args){
                 var str = "";
                 for(var k = 0; k<indent; k++) {str += "    ";}
                 header.forEach((col) => {
-                    str += printColumn("~" + col + "~", widthMap[col] + margin);
+                    str += chalk.bold(printColumn(col, widthMap[col] + margin));
                 });
                 console.log(str);
             }
