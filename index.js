@@ -103,6 +103,7 @@ function commaVals(arg) {
     return arg === undefined ? [] : arg.split(",")
 }
 
+
 /*
   API
 */
@@ -113,6 +114,33 @@ exports.print = function(data, commands){
     // Process data according to arguments
     commands.forEach((arg) => {
         switch(arg.name) {
+            case "filter": {
+                var fieldExpList = commaVals(arg.value);
+                // Generate functions for each expression from value list
+                var fList = fieldExpList.map((exp) => {
+                    var regExp = /^(.+)([\=\>])(.+)$/g;
+                    var match = regExp.exec(exp);
+                    if(match == null)  throw new Error("Bad expression format: " + exp);
+                    var field = match[1];
+                    var op = match[2];
+                    var value = match[3];
+                    var opF;
+                    switch(op) {
+                        case "=": opF = (v1,v2) => v1 === v2; break;
+                        case ">": opF = (v1,v2) => v1 > v2; break;
+                        case "<": opF = (v1,v2) => v1 > v2; break;
+                        case ">=": opF = (v1,v2) => v1 <= v2; break;
+                        case "<=": opF = (v1,v2) => v1 >= v2; break;
+                        default: throw new Error("Unknown operator: " + op);
+                    }
+                    return (row) => opF(row[field], value);
+                });
+                // Make single filter function
+                var filterF = (row) => fList.reduce((result,f) => !result ? result : f(row), true); // check row for all functions
+                // Make transformation
+                data = transforms.filter(data, filterF);
+                break;
+            }
             case "group": {
                 var groupFs = commaVals(arg.value).map(group => (row => row[group]));
                 data = transforms.group(data, groupFs);

@@ -50,6 +50,10 @@ function map(data, f) {
 /*
  Special functions to handle data - sorting, grouping and so on
  */
+function filter(data, f) {
+    return mapGroup(data, (group) => group.filter(f))
+}
+
 function group(ar, fs) {
     var f = fs[0];
     if(f) {
@@ -112,9 +116,45 @@ function showFields(data, fields) {
     });
 }
 
+function clear(data) {
+    function aux(data) {
+        if(data.constructor === Array) {
+            return {
+                value: data,
+                isEmpty: data.length == 0
+            };
+        }
+        else if(data.constructor === Number || data.constructor === String || data.constructor === Boolean) {
+            return {
+                value: data,
+                isEmpty: false
+            }
+        }
+        else {
+            var result = {};
+            var isEmpty = true;
+            for(var i in data) {
+                var clearResult = aux(data[i]);
+                if(!clearResult.isEmpty) {
+                    isEmpty = false;
+                    result[i] = clearResult.value;
+                }
+            }
+            return {
+                value:result,
+                isEmpty: isEmpty
+            };
+        }
+    }
+    return aux(data).value;
+}
+
+
 module.exports.mapGroup = mapGroup;
 module.exports.map = map;
 
+module.exports.filter = filter;
+module.exports.clear = clear;
 module.exports.group = group;
 module.exports.sort = sort;
 module.exports.hideFields = hideFields;
