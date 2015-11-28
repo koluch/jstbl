@@ -30,9 +30,9 @@ var expect = require('chai').expect;
 
 var transforms = require('../transforms');
 
-describe('transforms', function () {
-    describe('#mapGroup', function() {
-        it('should group any structures to itself, if function is not supplied', function () {
+describe('transforms', () =>  {
+    describe('#mapGroup', () =>  {
+        it('should group any structures to itself, if function is not supplied', () =>  {
             expect(transforms.mapGroup(42)).to.be.deep.equal(42);
             expect(transforms.mapGroup("")).to.be.deep.equal("");
             expect(transforms.mapGroup(true)).to.be.deep.equal(true);
@@ -40,18 +40,18 @@ describe('transforms', function () {
             expect(transforms.mapGroup({a:42})).to.be.deep.equal({a:42});
             expect(transforms.mapGroup({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
-        it('should map primitives properly', function () {
+        it('should map primitives properly', () =>  {
             expect(transforms.mapGroup(42, (x) => x * -1)).to.be.deep.equal(-42);
             expect(transforms.mapGroup("abc", (x) => x + x)).to.be.deep.equal("abcabc");
             expect(transforms.mapGroup(true, (x) => !x)).to.be.deep.equal(false);
         });
-        it('should map empty object to itself', function () {
+        it('should map empty object to itself', () =>  {
             expect(transforms.mapGroup({}, (x) => x + x)).to.be.deep.equal({});
         });
-        it('should fold arrays to scalars', function () {
+        it('should fold arrays to scalars', () =>  {
             expect(transforms.mapGroup([3,4,5], (arr) => arr.length)).to.be.equal(3);
         });
-        it('should fold deeply nested arrays to scalars', function () {
+        it('should fold deeply nested arrays to scalars', () =>  {
             var data = {
                 a: [1,2,3],
                 b: {
@@ -67,7 +67,7 @@ describe('transforms', function () {
             };
             expect(transforms.mapGroup(data, f)).to.be.deep.equal(expected);
         });
-        it('should fold any plain JSON', function () {
+        it('should fold any plain JSON', () =>  {
             var data = {
                 a: "str",
                 b: {
@@ -90,8 +90,8 @@ describe('transforms', function () {
     });
 
 
-    describe('#map', function() {
-        it('should map any structures to itself, if function is not supplied', function () {
+    describe('#map', () =>  {
+        it('should map any structures to itself, if function is not supplied', () =>  {
             expect(transforms.map(42)).to.be.deep.equal(42);
             expect(transforms.map("")).to.be.deep.equal("");
             expect(transforms.map(true)).to.be.deep.equal(true);
@@ -99,18 +99,18 @@ describe('transforms', function () {
             expect(transforms.map({a:42})).to.be.deep.equal({a:42});
             expect(transforms.map({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
-        it('should map primitives properly', function () {
+        it('should map primitives properly', () =>  {
             expect(transforms.map(42, (x) => x * -1)).to.be.deep.equal(-42);
             expect(transforms.map("abc", (x) => x + x)).to.be.deep.equal("abcabc");
             expect(transforms.map(true, (x) => !x)).to.be.deep.equal(false);
         });
-        it('should map empty object to itself', function () {
+        it('should map empty object to itself', () =>  {
             expect(transforms.map({}, (x) => x + x)).to.be.deep.equal({});
         });
-        it('should properly map arrays', function () {
+        it('should properly map arrays', () =>  {
             expect(transforms.map([3,4,5], (x) => x * x)).to.be.deep.equal([9,16,25]);
         });
-        it('should map any plain JSON', function () {
+        it('should map any plain JSON', () =>  {
             var data = {
                 a: "str",
                 b: {
@@ -132,24 +132,24 @@ describe('transforms', function () {
         });
     });
 
-    describe('#filter', function(){});
+    describe('#filter', () => {});
 
-    describe('#clear', function() {
-        it('should clear primitive values to iteself', function () {
+    describe('#clear', () =>  {
+        it('should clear primitive values to iteself', () =>  {
             expect(transforms.clear(42)).to.be.equal(42);
             expect(transforms.clear("")).to.be.equal("");
             expect(transforms.clear(true)).to.be.equal(true);
         });
-        it('should clear empty object to empty object', function () {
+        it('should clear empty object to empty object', () =>  {
             expect(transforms.clear({})).to.be.deep.equal({});
         });
-        it('should clear empty array to empty array', function () {
+        it('should clear empty array to empty array', () =>  {
             expect(transforms.clear([])).to.be.deep.equal([]);
         });
-        it('should clear non-empty array to itself', function () {
+        it('should clear non-empty array to itself', () =>  {
             expect(transforms.clear([3,4,5])).to.be.deep.equal([3,4,5]);
         });
-        it('should clear deep nested tree to itself', function () {
+        it('should clear deep nested tree to itself', () =>  {
             var source = {
                 a: [1, 2, 3],
                 b: {b1: {b11:"test"}, b2: 42},
@@ -157,11 +157,11 @@ describe('transforms', function () {
             };
             expect(transforms.clear(source)).to.be.deep.equal(source);
         });
-        it('should clear nested empty objects to empty object', function () {
+        it('should clear nested empty objects to empty object', () =>  {
             var cleared = transforms.clear({a:{},b:{b1:{},b2:{}},c:[]});
             expect(cleared).to.be.deep.equal({});
         });
-        it('should clear tree, nested in non-empty tree', function () {
+        it('should clear tree, nested in non-empty tree', () =>  {
             var cleared = transforms.clear({
                 a: [1,2,3],
                 b: {b1: {}, b2: 42},
@@ -175,11 +175,11 @@ describe('transforms', function () {
         });
     });
 
-    describe('#group', function(){
-        it('should group any structures to itself, if functions are not supplied', function () {
+    describe('#group', () => {
+        it('should group any structures to itself, if functions are not supplied', () =>  {
             expect(transforms.group({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
-        it('it should properly group table-like JSON by single function', function () {
+        it('it should properly group table-like JSON by single function', () =>  {
             var data = [
                 {age:21,firstName:"John",lastName:"Doe"},
                 {age:21,firstName:"Ann",lastName:"Brown"},
@@ -198,13 +198,13 @@ describe('transforms', function () {
 
             expect(transforms.group(data, fs)).to.be.deep.equal(expected);
         });
-        it('should group empty array to empty object', function () {
+        it('should group empty array to empty object', () =>  {
             expect(transforms.group([], [(row) => 42])).to.be.deep.equal({});
         });
-        it('should group empty object to empty object', function () {
+        it('should group empty object to empty object', () =>  {
             expect(transforms.group({}, [(row) => 42])).to.be.deep.equal({});
         });
-        it('should group table-like JSON by multiple functions properly', function () {
+        it('should group table-like JSON by multiple functions properly', () =>  {
             var data = [
                 {age:21,firstName:"John",lastName:"Doe"},
                 {age:21,firstName:"Ann",lastName:"Brown"},
@@ -225,11 +225,11 @@ describe('transforms', function () {
         });
     });
 
-    describe('#sort', function(){});
+    describe('#sort', () => {});
 
-    describe('#hideFields', function(){});
+    describe('#hideFields', () => {});
 
-    describe('#showFields', function(){});
+    describe('#showFields', () => {});
 
-    describe('#map', function() {});
+    describe('#map', () =>  {});
 });
