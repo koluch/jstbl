@@ -71,6 +71,7 @@ describe('transforms', function () {
             expect(cleared).to.be.deep.equal(expected);
         });
     });
+
     describe('#mapGroup', function() {
         it('should group any structures to itself, if function is not supplied', function () {
             expect(transforms.mapGroup(42)).to.be.deep.equal(42);
@@ -126,6 +127,43 @@ describe('transforms', function () {
                 c: "~42~"
             };
             expect(transforms.mapGroup(data, f)).to.be.deep.equal(expected);
+        });
+    });
+
+
+    describe('#map', function() {
+        it('should map any structures to itself, if function is not supplied', function () {
+            expect(transforms.map(42)).to.be.deep.equal(42);
+            expect(transforms.map("")).to.be.deep.equal("");
+            expect(transforms.map(true)).to.be.deep.equal(true);
+            expect(transforms.map([1,2,3])).to.be.deep.equal([1,2,3]);
+            expect(transforms.map({a:42})).to.be.deep.equal({a:42});
+            expect(transforms.map({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
+        });
+        it('should map primitives properly', function () {
+            expect(transforms.map(42, (x) => x * -1)).to.be.deep.equal(-42);
+            expect(transforms.map("abc", (x) => x + x)).to.be.deep.equal("abcabc");
+            expect(transforms.map(true, (x) => !x)).to.be.deep.equal(false);
+        });
+        it('should map any plain JSON', function () {
+            var data = {
+                a: "str",
+                b: {
+                    b1: [4,5],
+                    b2: true
+                },
+                c: 42
+            };
+            var f = (anything) => "~" + anything + "~";
+            var expected = {
+                a: "~str~",
+                b: {
+                    b1: ["~4~","~5~"],
+                    b2: "~true~"
+                },
+                c: "~42~"
+            };
+            expect(transforms.map(data, f)).to.be.deep.equal(expected);
         });
     });
 });

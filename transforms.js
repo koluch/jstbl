@@ -48,7 +48,15 @@ function mapGroup(data, f) {
 }
 
 function map(data, f) {
-    return mapGroup(data, (group) => group.map(f));
+    if(f === undefined) return data;
+    return mapGroup(data, (group) => {
+        if(group.constructor === Number || group.constructor === Boolean || group.constructor === String) {
+            return f(group);
+        }
+        else { // it it is array
+            return group.map(f)
+        }
+    });
 }
 
 /*
