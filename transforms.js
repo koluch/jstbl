@@ -90,15 +90,9 @@ function sort(data, fs) {
     fs = fs.constructor === Array ? fs : [fs];
     return mapGroup(data, (group) => {
         if (group.constructor === Array) {
-            return group.sort((x, y) => {
-                var result = 0;
-                for (var i = 0; i < fs.length; i++) {
-                    var f = fs[i];
-                    result = f(x, y);
-                    if (result != 0) break;
-                }
-                return result;
-            })
+            return group.sort((x, y) => (
+                fs.reduce((result, f) => ((result === 0) ? f(x, y) : result), 0)
+            ))
         }
         else {
             return group;
