@@ -36,7 +36,7 @@ function mapGroup(data, f) {
         return f(data.slice());
     }
     else if(data.constructor === Number || data.constructor === String || data.constructor === Boolean) {
-        return f(data);
+        return data;
     }
     else {
         var result = {};
@@ -49,14 +49,7 @@ function mapGroup(data, f) {
 
 function map(data, f) {
     if(f === undefined) return data;
-    return mapGroup(data, (group) => {
-        if(group.constructor === Number || group.constructor === Boolean || group.constructor === String) {
-            return f(group);
-        }
-        else { // it it is array
-            return group.map(f)
-        }
-    });
+    return mapGroup(data, (group) => group.map(f));
 }
 
 /*
@@ -71,16 +64,16 @@ function group(data, fs) {
     fs = fs.constructor === Array ? fs : [fs];
     return fs.reduce((result, f) => (
          mapGroup(result, (group) => {
-            var result = {};
+            var grouped = {};
             for (var i = 0; i < group.length; i++) {
                 var el = group[i];
                 var cat = f(el);
-                if (!result[cat]) {
-                    result[cat] = [];
+                if (!grouped[cat]) {
+                    grouped[cat] = [];
                 }
-                result[cat].push(el);
+                grouped[cat].push(el);
             }
-            return result;
+            return grouped;
         })
     ), data)
 }
@@ -88,16 +81,11 @@ function group(data, fs) {
 function sort(data, fs) {
     fs = fs || [];
     fs = fs.constructor === Array ? fs : [fs];
-    return mapGroup(data, (group) => {
-        if (group.constructor === Array) {
-            return group.sort((x, y) => (
-                fs.reduce((result, f) => ((result === 0) ? f(x, y) : result), 0)
-            ))
-        }
-        else {
-            return group;
-        }
-    });
+    return mapGroup(data, (group) => (
+        group.sort((x, y) => (
+            fs.reduce((result, f) => ((result === 0) ? f(x, y) : result), 0)
+        ))
+    ));
 }
 
 function hideFields(data, fields) {

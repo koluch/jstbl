@@ -40,10 +40,10 @@ describe('transforms', () =>  {
             expect(transforms.mapGroup({a:42})).to.be.deep.equal({a:42});
             expect(transforms.mapGroup({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
-        it('should map primitives properly', () =>  {
-            expect(transforms.mapGroup(42, (x) => x * -1)).to.be.deep.equal(-42);
-            expect(transforms.mapGroup("abc", (x) => x + x)).to.be.deep.equal("abcabc");
-            expect(transforms.mapGroup(true, (x) => !x)).to.be.deep.equal(false);
+        it('should map primitives to itself', () =>  {
+            expect(transforms.mapGroup(42, (x) => x * -1)).to.be.deep.equal(42);
+            expect(transforms.mapGroup("abc", (x) => x + x)).to.be.deep.equal("abc");
+            expect(transforms.mapGroup(true, (x) => !x)).to.be.deep.equal(true);
         });
         it('should map empty object to itself', () =>  {
             expect(transforms.mapGroup({}, (x) => x + x)).to.be.deep.equal({});
@@ -76,14 +76,14 @@ describe('transforms', () =>  {
                 },
                 c: 42
             };
-            var f = (anything) => "~" + anything + "~";
+            var f = (group) => group.length;
             var expected = {
-                a: "~str~",
+                a: "str",
                 b: {
-                    b1: "~4,5~",
-                    b2: "~true~"
+                    b1: 2,
+                    b2: true
                 },
-                c: "~42~"
+                c: 42
             };
             expect(transforms.mapGroup(data, f)).to.be.deep.equal(expected);
         });
@@ -99,10 +99,10 @@ describe('transforms', () =>  {
             expect(transforms.map({a:42})).to.be.deep.equal({a:42});
             expect(transforms.map({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
-        it('should map primitives properly', () =>  {
-            expect(transforms.map(42, (x) => x * -1)).to.be.deep.equal(-42);
-            expect(transforms.map("abc", (x) => x + x)).to.be.deep.equal("abcabc");
-            expect(transforms.map(true, (x) => !x)).to.be.deep.equal(false);
+        it('should map primitives to itself', () =>  {
+            expect(transforms.map(42, (x) => x * -1)).to.be.deep.equal(42);
+            expect(transforms.map("abc", (x) => x + x)).to.be.deep.equal("abc");
+            expect(transforms.map(true, (x) => !x)).to.be.deep.equal(true);
         });
         it('should map empty object to itself', () =>  {
             expect(transforms.map({}, (x) => x + x)).to.be.deep.equal({});
@@ -119,14 +119,14 @@ describe('transforms', () =>  {
                 },
                 c: 42
             };
-            var f = (anything) => "~" + anything + "~";
+            var f = (x) => x * x;
             var expected = {
-                a: "~str~",
+                a: "str",
                 b: {
-                    b1: ["~4~","~5~"],
-                    b2: "~true~"
+                    b1: [16,25],
+                    b2: true
                 },
-                c: "~42~"
+                c: 42
             };
             expect(transforms.map(data, f)).to.be.deep.equal(expected);
         });
