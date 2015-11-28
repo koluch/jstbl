@@ -31,47 +31,6 @@ var expect = require('chai').expect;
 var transforms = require('../transforms');
 
 describe('transforms', function () {
-    describe('#clear', function() {
-        it('should clear primitive values to iteself', function () {
-            expect(transforms.clear(42)).to.be.equal(42);
-            expect(transforms.clear("")).to.be.equal("");
-            expect(transforms.clear(true)).to.be.equal(true);
-        });
-        it('should clear empty object to empty object', function () {
-            expect(transforms.clear({})).to.be.deep.equal({});
-        });
-        it('should clear empty array to empty array', function () {
-            expect(transforms.clear([])).to.be.deep.equal([]);
-        });
-        it('should clear non-empty array to itself', function () {
-            expect(transforms.clear([3,4,5])).to.be.deep.equal([3,4,5]);
-        });
-        it('should clear deep nested tree to itself', function () {
-            var source = {
-                a: [1, 2, 3],
-                b: {b1: {b11:"test"}, b2: 42},
-                c: [4,5]
-            };
-            expect(transforms.clear(source)).to.be.deep.equal(source);
-        });
-        it('should clear nested empty objects to empty object', function () {
-            var cleared = transforms.clear({a:{},b:{b1:{},b2:{}},c:[]});
-            expect(cleared).to.be.deep.equal({});
-        });
-        it('should clear tree, nested in non-empty tree', function () {
-            var cleared = transforms.clear({
-                a: [1,2,3],
-                b: {b1: {}, b2: 42},
-                c: []
-            });
-            var expected = {
-                a: [1,2,3],
-                b: {b2: 42}
-            };
-            expect(cleared).to.be.deep.equal(expected);
-        });
-    });
-
     describe('#mapGroup', function() {
         it('should group any structures to itself, if function is not supplied', function () {
             expect(transforms.mapGroup(42)).to.be.deep.equal(42);
@@ -149,7 +108,7 @@ describe('transforms', function () {
             expect(transforms.map({}, (x) => x + x)).to.be.deep.equal({});
         });
         it('should properly map arrays', function () {
-            expect(transforms.mapGroup([3,4,5], (x) => x * x)).to.be.equal([9,16,25]);
+            expect(transforms.map([3,4,5], (x) => x * x)).to.be.deep.equal([9,16,25]);
         });
         it('should map any plain JSON', function () {
             var data = {
@@ -172,4 +131,53 @@ describe('transforms', function () {
             expect(transforms.map(data, f)).to.be.deep.equal(expected);
         });
     });
+
+    describe('#filter', function(){});
+
+    describe('#clear', function() {
+        it('should clear primitive values to iteself', function () {
+            expect(transforms.clear(42)).to.be.equal(42);
+            expect(transforms.clear("")).to.be.equal("");
+            expect(transforms.clear(true)).to.be.equal(true);
+        });
+        it('should clear empty object to empty object', function () {
+            expect(transforms.clear({})).to.be.deep.equal({});
+        });
+        it('should clear empty array to empty array', function () {
+            expect(transforms.clear([])).to.be.deep.equal([]);
+        });
+        it('should clear non-empty array to itself', function () {
+            expect(transforms.clear([3,4,5])).to.be.deep.equal([3,4,5]);
+        });
+        it('should clear deep nested tree to itself', function () {
+            var source = {
+                a: [1, 2, 3],
+                b: {b1: {b11:"test"}, b2: 42},
+                c: [4,5]
+            };
+            expect(transforms.clear(source)).to.be.deep.equal(source);
+        });
+        it('should clear nested empty objects to empty object', function () {
+            var cleared = transforms.clear({a:{},b:{b1:{},b2:{}},c:[]});
+            expect(cleared).to.be.deep.equal({});
+        });
+        it('should clear tree, nested in non-empty tree', function () {
+            var cleared = transforms.clear({
+                a: [1,2,3],
+                b: {b1: {}, b2: 42},
+                c: []
+            });
+            var expected = {
+                a: [1,2,3],
+                b: {b2: 42}
+            };
+            expect(cleared).to.be.deep.equal(expected);
+        });
+    });
+
+    describe('#group', function(){});
+    describe('#sort', function(){});
+    describe('#hideFields', function(){});
+    describe('#showFields', function(){});
+    describe('#map', function() {});
 });
