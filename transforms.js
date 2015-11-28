@@ -55,8 +55,12 @@ function map(data, f) {
 /*
  Special functions to handle data - sorting, grouping and so on
  */
-function filter(data, f) {
-    return mapGroup(data, (group) => group.filter(f))
+function filter(data, fs) {
+    fs = fs || [];
+    fs = fs.constructor === Array ? fs : [fs];
+    return mapGroup(data, (group) => (
+        fs.reduce((result, f) => result.filter(f), group)
+    ))
 }
 
 function group(data, fs) {

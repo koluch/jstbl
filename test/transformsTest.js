@@ -132,10 +132,58 @@ describe('transforms', () =>  {
         });
     });
 
-    describe('#filter', () => {});
+    describe('#filter', () => {
+        it('should filter primitive values to itself', () =>  {
+            expect(transforms.filter(42)).to.be.equal(42);
+            expect(transforms.filter("")).to.be.equal("");
+            expect(transforms.filter(true)).to.be.equal(true);
+        });
+        it('should filter empty arrays to itself', () =>  {
+            expect(transforms.filter({}, (x) => true)).to.be.deep.equal({});
+        });
+        it('should filter empty objects to itself', () =>  {
+            expect(transforms.filter({}, (x) => true)).to.be.deep.equal({});
+        });
+        it('should filter empty arrays to itself, when function is not supplied', () =>  {
+            //expect(transforms.filter([])).to.be.deep.equal([]);
+        });
+        it('should filter empty objects to itself, when function is not supplied', () =>  {
+            expect(transforms.filter({})).to.be.deep.equal({});
+        });
+        it('should filter simple arrays properly with single function', () =>  {
+            var data = [1,2,3,4,5];
+            var f = (x) => x >= 3;
+            var expected = [3,4,5];
+            expect(transforms.filter(data, f)).to.be.deep.equal(expected);
+        });
+        it('should filter simple arrays properly with multiple functions', () =>  {
+            var data = [1,2,3,4,5];
+            var fs = [
+                (x) => x > 2,
+                (x) => x < 4,
+            ];
+            var expected = [3];
+            expect(transforms.filter(data, fs)).to.be.deep.equal(expected);
+        });
+        it('should filter arrays, nested in tree', () =>  {
+            var data = {
+                a:[1,2,3,4,5],
+                b:42
+            };
+            var fs = [
+                (x) => x > 2,
+                (x) => x < 4,
+            ];
+            var expected = {
+                a:[3],
+                b:42
+            };
+            expect(transforms.filter(data, fs)).to.be.deep.equal(expected);
+        });
+    });
 
     describe('#clear', () =>  {
-        it('should clear primitive values to iteself', () =>  {
+        it('should clear primitive values to itself', () =>  {
             expect(transforms.clear(42)).to.be.equal(42);
             expect(transforms.clear("")).to.be.equal("");
             expect(transforms.clear(true)).to.be.equal(true);
@@ -234,6 +282,12 @@ describe('transforms', () =>  {
         });
         it('should group empty object to itself', () =>  {
             expect(transforms.group({}, (row) => 42)).to.be.deep.equal({});
+        });
+        it('should sort simple arrays properly', () =>  {
+            var data = [3,2,5,4,1];
+            var f = (x,y) => (x == y ? 0 : (x < y ? -1: 1));
+            var expected = [1,2,3,4,5];
+            expect(transforms.sort(data, f)).to.be.deep.equal(expected);
         });
         it('should properly sort arrays with by single function', () =>  {
             var data = [
