@@ -187,7 +187,7 @@ describe('transforms', () =>  {
                 {age:21,firstName:"John",lastName:"Hitchens"}
             ];
 
-            var fs = [(row) => row.age];
+            var fs = (row) => row.age;
 
             var expected = {
                 21: [{age: 21, firstName: "John", lastName: "Doe"},
@@ -199,10 +199,10 @@ describe('transforms', () =>  {
             expect(transforms.group(data, fs)).to.be.deep.equal(expected);
         });
         it('should group empty array to empty object', () =>  {
-            expect(transforms.group([], [(row) => 42])).to.be.deep.equal({});
+            expect(transforms.group([], (row) => 42)).to.be.deep.equal({});
         });
         it('should group empty object to empty object', () =>  {
-            expect(transforms.group({}, [(row) => 42])).to.be.deep.equal({});
+            expect(transforms.group({}, (row) => 42)).to.be.deep.equal({});
         });
         it('should group table-like JSON by multiple functions properly', () =>  {
             var data = [
@@ -225,7 +225,86 @@ describe('transforms', () =>  {
         });
     });
 
-    describe('#sort', () => {});
+    describe('#sort', () => {
+        it('should sort any structures to itself, if functions are not supplied', () =>  {
+            expect(transforms.sort({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
+        });
+        it('should sort empty array to itself', () =>  {
+            expect(transforms.sort([], (row) => -1)).to.be.deep.equal([]);
+        });
+        it('should group empty object to itself', () =>  {
+            expect(transforms.group({}, (row) => 42)).to.be.deep.equal({});
+        });
+        it('should properly sort arrays with by single function', () =>  {
+            var data = [
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ];
+
+            var f = (row1,row2) => row1.lastName.localeCompare(row2.lastName);
+
+            var expected = [
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ];
+
+            expect(transforms.sort(data, f)).to.be.deep.equal(expected);
+        });
+        it('should properly sort arrays with by multiple functions', () =>  {
+            var data = [
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ];
+
+            var fs = [
+                (row1,row2) => row1.firstName.localeCompare(row2.firstName),
+                (row1,row2) => row2.lastName.localeCompare(row1.lastName)
+            ];
+
+            var expected = [
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:21,firstName:"John",lastName:"Hitchens"},
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+            ];
+
+            expect(transforms.sort(data, fs)).to.be.deep.equal(expected);
+        });
+        it('should properly sort arrays, nested in tree', () =>  {
+            var data = {
+                'a': [
+                    {age:21,firstName:"John",lastName:"Doe"},
+                    {age:21,firstName:"Ann",lastName:"Brown"},
+                    {age:24,firstName:"John",lastName:"Anderson"},
+                    {age:21,firstName:"John",lastName:"Hitchens"}
+                ],
+                'b': 42
+            };
+
+            var fs = [
+                (row1,row2) => row1.firstName.localeCompare(row2.firstName),
+                (row1,row2) => row2.lastName.localeCompare(row1.lastName)
+            ];
+
+            var expected = {
+                'a': [
+                    {age:21,firstName:"Ann",lastName:"Brown"},
+                    {age:21,firstName:"John",lastName:"Hitchens"},
+                    {age:21,firstName:"John",lastName:"Doe"},
+                    {age:24,firstName:"John",lastName:"Anderson"},
+                ],
+                'b': 42
+            };
+
+            expect(transforms.sort(data, fs)).to.be.deep.equal(expected);
+        })
+    });
 
     describe('#hideFields', () => {});
 

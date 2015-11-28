@@ -68,7 +68,7 @@ function filter(data, f) {
 
 function group(data, fs) {
     fs = fs || [];
-    //fs = fs.constructor === Array ? fs : [fs];
+    fs = fs.constructor === Array ? fs : [fs];
     return fs.reduce((result, f) => (
          mapGroup(result, (group) => {
             var result = {};
@@ -86,17 +86,24 @@ function group(data, fs) {
 }
 
 function sort(data, fs) {
-    return mapGroup(data, (group) => (
-        group.sort((x,y) => {
-            var result = 0;
-            for (var i = 0; i < fs.length; i++) {
-                var f = fs[i];
-                result = f(x,y);
-                if(result!=0) break;
-            }
-            return result;
-        })
-    ));
+    fs = fs || [];
+    fs = fs.constructor === Array ? fs : [fs];
+    return mapGroup(data, (group) => {
+        if (group.constructor === Array) {
+            return group.sort((x, y) => {
+                var result = 0;
+                for (var i = 0; i < fs.length; i++) {
+                    var f = fs[i];
+                    result = f(x, y);
+                    if (result != 0) break;
+                }
+                return result;
+            })
+        }
+        else {
+            return group;
+        }
+    });
 }
 
 function hideFields(data, fields) {
