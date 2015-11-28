@@ -27,7 +27,7 @@
  * Created: 26.11.2015 01:15
  */
 
-var main = require("./index");
+var main = require("./../index");
 
 process.stdin.setEncoding("utf-8");
 
