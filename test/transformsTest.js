@@ -81,12 +81,12 @@ describe('transforms', function () {
             expect(transforms.mapGroup({a:42})).to.be.deep.equal({a:42});
             expect(transforms.mapGroup({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
-        it('should group primitives properly', function () {
+        it('should map primitives properly', function () {
             expect(transforms.mapGroup(42, (x) => x * -1)).to.be.deep.equal(-42);
             expect(transforms.mapGroup("abc", (x) => x + x)).to.be.deep.equal("abcabc");
             expect(transforms.mapGroup(true, (x) => !x)).to.be.deep.equal(false);
         });
-        it('should group empty object to itself', function () {
+        it('should map empty object to itself', function () {
             expect(transforms.mapGroup({}, (x) => x + x)).to.be.deep.equal({});
         });
         it('should fold arrays to scalars', function () {
@@ -144,6 +144,12 @@ describe('transforms', function () {
             expect(transforms.map(42, (x) => x * -1)).to.be.deep.equal(-42);
             expect(transforms.map("abc", (x) => x + x)).to.be.deep.equal("abcabc");
             expect(transforms.map(true, (x) => !x)).to.be.deep.equal(false);
+        });
+        it('should map empty object to itself', function () {
+            expect(transforms.map({}, (x) => x + x)).to.be.deep.equal({});
+        });
+        it('should properly map arrays', function () {
+            expect(transforms.mapGroup([3,4,5], (x) => x * x)).to.be.equal([9,16,25]);
         });
         it('should map any plain JSON', function () {
             var data = {
