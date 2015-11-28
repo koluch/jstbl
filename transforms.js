@@ -67,6 +67,8 @@ function filter(data, f) {
 }
 
 function group(data, fs) {
+    fs = fs || [];
+    //fs = fs.constructor === Array ? fs : [fs];
     return fs.reduce((result, f) => (
          mapGroup(result, (group) => {
             var result = {};

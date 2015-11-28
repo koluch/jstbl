@@ -175,9 +175,61 @@ describe('transforms', function () {
         });
     });
 
-    describe('#group', function(){});
+    describe('#group', function(){
+        it('should group any structures to itself, if functions are not supplied', function () {
+            expect(transforms.group({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
+        });
+        it('it should properly group table-like JSON by single function', function () {
+            var data = [
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ];
+
+            var fs = [(row) => row.age];
+
+            var expected = {
+                21: [{age: 21, firstName: "John", lastName: "Doe"},
+                    {age: 21, firstName: "Ann", lastName: "Brown"},
+                    {age: 21, firstName: "John", lastName: "Hitchens"}],
+                24: [{age: 24, firstName: "John", lastName: "Anderson"}]
+            };
+
+            expect(transforms.group(data, fs)).to.be.deep.equal(expected);
+        });
+        it('should group empty array to empty object', function () {
+            expect(transforms.group([], [(row) => 42])).to.be.deep.equal({});
+        });
+        it('should group empty object to empty object', function () {
+            expect(transforms.group({}, [(row) => 42])).to.be.deep.equal({});
+        });
+        it('should group table-like JSON by multiple functions properly', function () {
+            var data = [
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ];
+
+            var fs = [(row) => row.age, (row) => row.firstName];
+
+            var expected = {
+                21: {'John': [{age: 21, firstName: "John", lastName: "Doe"},
+                              {age: 21, firstName: "John", lastName: "Hitchens"}],
+                      'Ann': [{age: 21, firstName: "Ann", lastName: "Brown"}]},
+                24: {'John': [{age: 24, firstName: "John", lastName: "Anderson"}]}
+            };
+
+            expect(transforms.group(data, fs)).to.be.deep.equal(expected);
+        });
+    });
+
     describe('#sort', function(){});
+
     describe('#hideFields', function(){});
+
     describe('#showFields', function(){});
+
     describe('#map', function() {});
 });
