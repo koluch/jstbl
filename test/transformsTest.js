@@ -360,7 +360,54 @@ describe('transforms', () =>  {
         })
     });
 
-    describe('#hideFields', () => {});
+    describe('#hideFields', () => {
+        it('should do nothing with primitive values, when list of fields is not supplied', () =>  {
+            expect(transforms.hideFields("abc")).to.be.deep.equal("abc");
+            expect(transforms.hideFields(42)).to.be.deep.equal(42);
+            expect(transforms.hideFields(true)).to.be.deep.equal(true);
+        });
+        it('should do nothing with primitive values, when list of fields is supplied', () =>  {
+            expect(transforms.hideFields("abc", ["age"])).to.be.deep.equal("abc");
+            expect(transforms.hideFields(42, ["age"])).to.be.deep.equal(42);
+            expect(transforms.hideFields(true, ["age"])).to.be.deep.equal(true);
+        });
+        it('should do nothing with tree, when list of fields is not supplied', () =>  {
+            expect(transforms.hideFields({a:[1,2,3],b:{b1:42}})).to.be.deep.equal({a:[1,2,3],b:{b1:42}});
+        });
+        it('should hide field in simple object array', () =>  {
+            var data = [
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ];
+            var fields = ['age', 'firstName'];
+            var expected = [
+                {lastName:"Doe"},
+                {lastName:"Brown"},
+                {lastName:"Anderson"},
+                {lastName:"Hitchens"}
+            ];
+            expect(transforms.hideFields(data, fields)).to.be.deep.equal(expected);
+        });
+        it('should hide field in nested object arrays', () =>  {
+            var data = {a:[
+                {age:21,firstName:"John",lastName:"Doe"},
+                {age:21,firstName:"Ann",lastName:"Brown"},
+                {age:24,firstName:"John",lastName:"Anderson"},
+                {age:21,firstName:"John",lastName:"Hitchens"}
+            ]};
+            var fields = ['age', 'firstName'];
+            var expected = {a:[
+                {lastName:"Doe"},
+                {lastName:"Brown"},
+                {lastName:"Anderson"},
+                {lastName:"Hitchens"}
+            ]};
+            expect(transforms.hideFields(data, fields)).to.be.deep.equal(expected);
+        });
+
+    });
 
     describe('#showFields', () => {});
 

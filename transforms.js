@@ -93,14 +93,20 @@ function sort(data, fs) {
 }
 
 function hideFields(data, fields) {
+    fields = fields || [];
     return map(data, (row) => {
-        var result = {};
-        for(var i in row) {
-            if(fields.indexOf(i)==-1) {
-                result[i] = row[i];
-            }
+        if(row.constructor === Number || row.constructor === String || row.constructor === Boolean) {
+            return row;
         }
-        return result;
+        else {
+            var result = {};
+            for(var i in row) {
+                if(fields.indexOf(i)==-1) {
+                    result[i] = row[i];
+                }
+            }
+            return result;
+        }
     });
 }
 
