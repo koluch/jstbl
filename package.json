@@ -1,7 +1,7 @@
 {
   "name": "jstbl",
   "version": "0.1.0",
-  "description": "",
+  "description": "Tool for printing JSON data in a table manner",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"

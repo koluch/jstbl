@@ -1,6 +1,6 @@
 # jstbl
 
-Tool to print JSON data in a table manner
+Tool Tool for printing JSON data in a table manner
 
 ## Example
 
