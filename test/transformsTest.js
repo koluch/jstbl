@@ -28,7 +28,7 @@
  */
 var expect = require('chai').expect;
 
-var transforms = require('../transforms');
+var transforms = require('../src/transforms');
 
 describe('transforms', () =>  {
     describe('#mapGroup', () =>  {
