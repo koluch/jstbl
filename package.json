@@ -2,6 +2,7 @@
   "name": "jstbl",
   "version": "0.1.3",
   "description": "Tool for printing JSON data in a table manner",
+  "keywords": ["json","filtering","table","cli"],
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
