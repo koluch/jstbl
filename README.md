@@ -1,4 +1,5 @@
 # jstbl
+[![Build Status](https://travis-ci.org/koluch/jstbl.svg)](https://travis-ci.org/koluch/jstbl)
 
 Tool for printing JSON data in a table manner
 
