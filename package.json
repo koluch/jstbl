@@ -1,6 +1,6 @@
 {
   "name": "jstbl",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Tool for printing JSON data in a table manner",
   "main": "index.js",
   "scripts": {

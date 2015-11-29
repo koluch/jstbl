@@ -126,7 +126,7 @@ exports.print = function(data, commands){
                     var value = match[3];
                     var opF;
                     switch(op) {
-                        case "=": opF = (v1,v2) => v1 === v2; break;
+                        case "=": opF = (v1,v2) => v1 == v2; break;
                         case ">": opF = (v1,v2) => v1 > v2; break;
                         case "<": opF = (v1,v2) => v1 < v2; break;
                         case ">=": opF = (v1,v2) => v1 >= v2; break;
