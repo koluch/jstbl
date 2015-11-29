@@ -1,6 +1,6 @@
 {
   "name": "jstbl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tool for printing JSON data in a table manner",
   "main": "index.js",
   "scripts": {
@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/koluch/jstbl#readme",
   "dependencies": {
-    "chalk": "^1.1.1"
+    "chalk": "1.1.1"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "mocha": "^2.3.4"
+    "chai": "3.4.1",
+    "mocha": "2.3.4"
   }
 }
