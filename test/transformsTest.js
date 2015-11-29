@@ -32,6 +32,18 @@ var transforms = require('../transforms');
 
 describe('transforms', () =>  {
     describe('#mapGroup', () =>  {
+        it('should do nothing with null', () =>  {
+            expect(transforms.mapGroup(null, (x) => x)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.mapGroup(undefined, (x) => x)).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if function is not supplied', () =>  {
+            expect(transforms.mapGroup(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if function is not supplied', () =>  {
+            expect(transforms.mapGroup(undefined)).to.be.deep.equal(undefined);
+        });
         it('should group any structures to itself, if function is not supplied', () =>  {
             expect(transforms.mapGroup(42)).to.be.deep.equal(42);
             expect(transforms.mapGroup("")).to.be.deep.equal("");
@@ -91,6 +103,18 @@ describe('transforms', () =>  {
 
 
     describe('#map', () =>  {
+        it('should do nothing with null', () =>  {
+            expect(transforms.map(null, (x) => x)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.map(undefined, (x) => x)).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if function is not supplied', () =>  {
+            expect(transforms.map(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if function is not supplied', () =>  {
+            expect(transforms.map(undefined)).to.be.deep.equal(undefined);
+        });
         it('should map any structures to itself, if function is not supplied', () =>  {
             expect(transforms.map(42)).to.be.deep.equal(42);
             expect(transforms.map("")).to.be.deep.equal("");
@@ -133,6 +157,18 @@ describe('transforms', () =>  {
     });
 
     describe('#filter', () => {
+        it('should do nothing with null', () =>  {
+            expect(transforms.filter(null, (x) => x)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.filter(undefined, (x) => x)).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if function is not supplied', () =>  {
+            expect(transforms.filter(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if function is not supplied', () =>  {
+            expect(transforms.filter(undefined)).to.be.deep.equal(undefined);
+        });
         it('should filter primitive values to itself', () =>  {
             expect(transforms.filter(42)).to.be.equal(42);
             expect(transforms.filter("")).to.be.equal("");
@@ -183,6 +219,12 @@ describe('transforms', () =>  {
     });
 
     describe('#clear', () =>  {
+        it('should do nothing with null', () =>  {
+            expect(transforms.clear(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.clear(undefined)).to.be.deep.equal(undefined);
+        });
         it('should clear primitive values to itself', () =>  {
             expect(transforms.clear(42)).to.be.equal(42);
             expect(transforms.clear("")).to.be.equal("");
@@ -224,6 +266,18 @@ describe('transforms', () =>  {
     });
 
     describe('#group', () => {
+        it('should do nothing with null', () =>  {
+            expect(transforms.group(null, (x) => x)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.group(undefined, (x) => x)).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if function is not supplied', () =>  {
+            expect(transforms.group(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if function is not supplied', () =>  {
+            expect(transforms.group(undefined)).to.be.deep.equal(undefined);
+        });
         it('should group any structures to itself, if functions are not supplied', () =>  {
             expect(transforms.group({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
@@ -274,6 +328,18 @@ describe('transforms', () =>  {
     });
 
     describe('#sort', () => {
+        it('should do nothing with null', () =>  {
+            expect(transforms.sort(null, (x) => x)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.sort(undefined, (x) => x)).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if function is not supplied', () =>  {
+            expect(transforms.sort(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if function is not supplied', () =>  {
+            expect(transforms.sort(undefined)).to.be.deep.equal(undefined);
+        });
         it('should sort any structures to itself, if functions are not supplied', () =>  {
             expect(transforms.sort({a:[1,2,3],b:{b1:42,b2:[4,5]}})).to.be.deep.equal({a:[1,2,3],b:{b1:42,b2:[4,5]}});
         });
@@ -361,6 +427,18 @@ describe('transforms', () =>  {
     });
 
     describe('#hideFields', () => {
+        it('should do nothing with null', () =>  {
+            expect(transforms.hideFields(null, ["age"])).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.hideFields(undefined, ["age"])).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if fields are not supplied', () =>  {
+            expect(transforms.hideFields(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if fields are  not supplied', () =>  {
+            expect(transforms.hideFields(undefined)).to.be.deep.equal(undefined);
+        });
         it('should do nothing with primitive values, when list of fields is not supplied', () =>  {
             expect(transforms.hideFields("abc")).to.be.deep.equal("abc");
             expect(transforms.hideFields(42)).to.be.deep.equal(42);
@@ -409,6 +487,18 @@ describe('transforms', () =>  {
     });
 
     describe('#showFields', () => {
+        it('should do nothing with null', () =>  {
+            expect(transforms.showFields(null, ["age"])).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined', () =>  {
+            expect(transforms.showFields(undefined, ["age"])).to.be.deep.equal(undefined);
+        });
+        it('should do nothing with null, if fields are not supplied', () =>  {
+            expect(transforms.showFields(null)).to.be.deep.equal(null);
+        });
+        it('should do nothing with undefined, if fields are  not supplied', () =>  {
+            expect(transforms.showFields(undefined)).to.be.deep.equal(undefined);
+        });
         it('should do nothing with primitive values, when list of fields is not supplied', () =>  {
             expect(transforms.showFields("abc")).to.be.deep.equal("abc");
             expect(transforms.showFields(42)).to.be.deep.equal(42);

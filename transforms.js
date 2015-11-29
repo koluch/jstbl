@@ -31,6 +31,7 @@
  Basic table-data manipulation functions
  */
 function mapGroup(data, f) {
+    if(data === undefined || data === null) return data;
     if(f === undefined) return data;
     if(data.constructor === Array) {
         return f(data.slice());
@@ -56,6 +57,9 @@ function map(data, f) {
  Special functions to handle data - sorting, grouping and so on
  */
 function filter(data, fs) {
+    if(data===null || data === undefined) {
+        return data;
+    }
     fs = fs || [];
     fs = fs.constructor === Array ? fs : [fs];
     return mapGroup(data, (group) => (
@@ -124,6 +128,7 @@ function showFields(data, fields) {
 }
 
 function clear(data) {
+    if(data === null || data === undefined) return data;
     function aux(data) {
         if(data.constructor === Array) {
             return {
