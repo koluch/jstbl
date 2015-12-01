@@ -128,7 +128,7 @@ All commands applied to data in the supplied order. Full list of available comma
    Paul            Williams     
    ```    
 
-* `filder:<field1><op><value>,<field2><op><value>` - filters data by comparing specified rows fields, using
+* `filter:<field1><op><value>,<field2><op><value>` - filters data by comparing specified rows fields, using
    operator `<op>` and value `<value>` to compare. Supported operators: `<`, `>`, `<=`, `>=`. For example:
    
    ```bash
