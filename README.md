@@ -51,7 +51,7 @@ All commands applied to data in the supplied order. Full list of available comma
    sign at the end of field name (e. g. `age-`). Also, it is possible to specify `+` for `asc` ordering, which is default. 
    For example:
    ```bash
-   cat data.json | jstbl sort:gender+,age-
+   $ cat data.json | jstbl sort:gender+,age-
    id       firstName       lastName        gender       age       
    4        Elizabeth       Berridge        female       34        
    12       Alice           Curwen          female       30        
