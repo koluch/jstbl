@@ -1,6 +1,6 @@
 {
   "name": "jstbl",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Tool for printing JSON data in a table manner",
   "keywords": [
     "json",
