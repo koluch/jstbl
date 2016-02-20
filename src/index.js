@@ -110,6 +110,7 @@ function commaVals(arg) {
 
 const MARGIN = 7; // margin between columns
 exports.print = function(data, commands){
+    commands = commands || [];
 
     // Process data according to arguments
     commands.forEach((arg) => {
